@@ -12,7 +12,6 @@ const errorHandler = require('./helpers/error.helper');
 const result = require('./routes/result.route');
 //MiddleWaress
 const allowedOrigins = [
-    'https://tjbazaar.netlify.app',
     process.env.FRONTEND_URL
 ];
 const corsOptions = {
