@@ -91,7 +91,6 @@ router.get("/:category_id/all",
     check("category_id")
         .isMongoId()
         .withMessage('Category ID must be a valid MongoDB ID'),
-    restrictLogIn,
     validate,
     getQuestionsAll
 );
