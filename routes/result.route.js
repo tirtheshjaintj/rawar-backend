@@ -9,7 +9,7 @@ const router = express.Router();
 const validateQuizResults = [
     check('category_id').not().isEmpty().withMessage('Category ID is required'),
     check('answers').isArray().withMessage('Answers should be an array of objects'),
-    check('answers.*.question_id').not().isEmpty().withMessage('Question ID is required'),
+    check('answers.*.question_id').isMongoId().not().isEmpty().withMessage('Question ID is required'),
     check('answers.*.user_answer').isNumeric().withMessage('User answer must be a number')
 ];
 

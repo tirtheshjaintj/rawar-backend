@@ -7,7 +7,6 @@ const mongoose = require('mongoose');
 // Controller to add a new question
 const addQuestion = asyncHandler(async (req, res) => {
     const questionsData = req.body; // This could be a single question or an array of questions.
-    console.log(questionsData);
     try {
         // Check if the request body is an array or a single object
         const isBulk = Array.isArray(questionsData);
@@ -71,7 +70,6 @@ const addQuestion = asyncHandler(async (req, res) => {
 const getQuestions = asyncHandler(async (req, res) => {
     const { category_id } = req.params;
     const categoryExists = await Category.findById(category_id);
-    // console.log(categoryExists);
     if (!categoryExists) {
         return res.status(400).json({ message: 'Invalid category ID' });
     }
@@ -92,4 +90,20 @@ const getQuestions = asyncHandler(async (req, res) => {
     return res.status(200).json({ status: true, message: "Questions Are Ready", data: questions });
 });
 
-module.exports = { addQuestion, getQuestions };
+const getQuestionsAll = asyncHandler(async (req, res) => {
+    const { category_id } = req.params;
+    const categoryExists = await Category.findById(category_id);
+    console.log(categoryExists);
+    if (!categoryExists) {
+        return res.status(400).json({ message: 'Invalid category ID' });
+    }
+    const questions = await Question.find({ category_id });
+
+    if (questions.length === 0) {
+        return res.status(404).json({ status: false, category_id, message: "No questions found for this category" });
+    }
+
+    return res.status(200).json({ status: true, message: "Questions Are Ready", data: questions });
+});
+
+module.exports = { addQuestion, getQuestions, getQuestionsAll };

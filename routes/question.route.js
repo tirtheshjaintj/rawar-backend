@@ -1,6 +1,6 @@
 const express = require('express');
 const { check, validationResult } = require('express-validator');
-const { addQuestion, getQuestions } = require('../controllers/question.controller');
+const { addQuestion, getQuestions, getQuestionsAll } = require('../controllers/question.controller');
 const { validate } = require('../middlewares/validate');
 const { restrictLogIn } = require('../middlewares/authCheck');
 const router = express.Router();
@@ -85,6 +85,15 @@ router.get("/:category_id",
     restrictLogIn,
     validate,
     getQuestions
+);
+
+router.get("/:category_id/all",
+    check("category_id")
+        .isMongoId()
+        .withMessage('Category ID must be a valid MongoDB ID'),
+    restrictLogIn,
+    validate,
+    getQuestionsAll
 );
 
 module.exports = router;

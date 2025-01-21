@@ -9,7 +9,6 @@ function getUser(token) {
     if (!token) return null;
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        // console.log("jwt.helper", decoded);
         return decoded;
     } catch (err) {
         console.log(err);
