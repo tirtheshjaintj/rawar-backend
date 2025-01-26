@@ -9,7 +9,6 @@ const signup = asyncHandler(async (req, res) => {
 
     const { name, email, phone_number, address, password } = req.body;
     const otp = crypto.randomInt(100000, 999999).toString(); // Generate OTP
-
     try {
         // Check if the user with the given email already exists and is verified
         const existingUser = await User.findOne({ email, verified: true });
@@ -83,7 +82,6 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const updateUser = asyncHandler(async (req, res) => {
-
 
     const { name, email, phone_number, address } = req.body;
 
