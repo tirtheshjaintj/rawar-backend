@@ -69,6 +69,7 @@ router.post(
 
     ],
     validate,
+    restrictLogIn,
     addQuestion
 );
 

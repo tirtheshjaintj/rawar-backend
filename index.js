@@ -4,6 +4,7 @@ const cors = require('cors');
 const app = express();
 const connectDB = require('./helpers/db.helper');
 const user = require("./routes/user.route");
+const admin = require("./routes/admin.route");
 const question = require("./routes/question.route");
 const groq = require("./routes/groq.route");
 const cookieParser = require("cookie-parser");
@@ -38,6 +39,7 @@ app.get("/", (req, res) => {
 });
 app.use(errorHandler);
 app.use("/api/user", user);
+app.use("/api/admin", admin);
 app.use("/api/groq", groq);
 app.use("/api/question", question);
 app.use("/api/category", category);

@@ -91,7 +91,7 @@ const getResultAnalysis = asyncHandler(async (req, res) => {
         const question = answer.question_id;
         const selectedOption = question.options[answer.user_answer]; // user_answer stores the index of the selected option
         const correctOption = question.options[question.correctAnswerIndex];
-        const isCorrect = answer.correct ? 'Correct' : 'Wrong';
+        const isCorrect = answer.correct;
 
         return {
             question_title: question.title,

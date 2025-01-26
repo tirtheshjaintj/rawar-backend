@@ -8,13 +8,15 @@ const mongoose = require('mongoose');
 const addQuestion = asyncHandler(async (req, res) => {
     const questionsData = req.body; // This could be a single question or an array of questions.
     try {
+        console.log(questionsData.questions);
+
         // Check if the request body is an array or a single object
-        const isBulk = Array.isArray(questionsData);
+        const isBulk = Array.isArray(questionsData.questions);
         // If it's an array, handle bulk insertion
         if (isBulk) {
             const questionsToInsert = [];
             // Loop through each question in the array and validate the category
-            for (let questionData of questionsData) {
+            for (let questionData of questionsData.questions) {
                 const { title, options, correctAnswerIndex, explanation, category_id, level } = questionData;
 
                 // Ensure the category exists
@@ -37,7 +39,7 @@ const addQuestion = asyncHandler(async (req, res) => {
 
             // Bulk save the questions
             const savedQuestions = await Question.insertMany(questionsToInsert);
-            return res.status(201).json({ message: 'Questions added successfully', questions: savedQuestions });
+            return res.status(201).json({ status: true, message: 'Questions added successfully', questions: savedQuestions });
         } else {
             // Handle single question insertion
             const { title, options, correctAnswerIndex, explanation, category_id, level } = questionsData;
@@ -45,7 +47,7 @@ const addQuestion = asyncHandler(async (req, res) => {
             // Ensure the category exists
             const categoryExists = await Category.findById(category_id);
             if (!categoryExists) {
-                return res.status(400).json({ message: 'Invalid category ID' });
+                return res.status(400).json({ status: false, message: 'Invalid category ID' });
             }
 
             const question = new Question({
@@ -58,10 +60,11 @@ const addQuestion = asyncHandler(async (req, res) => {
             });
 
             const savedQuestion = await question.save();
-            return res.status(201).json({ message: 'Question added successfully', question: savedQuestion });
+            return res.status(201).json({ status: true, message: 'Question added successfully', question: savedQuestion });
         }
     } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+        console.log(error);
+        return res.status(500).json({ status: false, message: 'Internal Server Error', error: error.message });
     }
 });
 

@@ -43,6 +43,10 @@ const adminSchema = new mongoose.Schema({
             message: () => `OTP must be 6 digits`
         }
     },
+    verified: {
+        type: Boolean,
+        default: false,
+    },
     google_id: {
         type: String,
         validate: {
@@ -57,27 +61,23 @@ const adminSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Middleware to hash password and generate OTP before saving
-userSchema.pre('save', async function (next) {
-
+adminSchema.pre('save', async function (next) {
     try {
-
         if (this.isModified('password')) {
             this.password = await bcrypt.hash(this.password, 12);
         }
-
         next();
     } catch (error) {
         next(error);
     }
-
 });
 
 // Method to check if the password is correct
-userSchema.methods.isPasswordCorrect = async function (password) {
+adminSchema.methods.isPasswordCorrect = async function (password) {
     return await bcrypt.compare(password, this.password);
 };
 
 // Compile the model
-const Admin = mongoose.model('Admin', userSchema);
+const Admin = mongoose.model('admin', adminSchema);
 
 module.exports = Admin;
