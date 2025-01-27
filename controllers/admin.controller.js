@@ -63,7 +63,7 @@ const login = asyncHandler(async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ status: false, message: 'Invalid email or password.' });
         }
-        const token = setAdmin(user);
+        const token = setUser(user);
         const rec_email = user.email;
         const mailStatus = await sendMail('Placement Preparation: You Logged In as Admin on new Device', rec_email,
             `Placement Preparation Just wanted to let you know that your account has been loggedIn in a new device`);
